@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 token = '1715572298:AAGwzI9oN3eloGcz7e5MV7ajLKgMOtt8bU0'
 bot = telebot.TeleBot(token)
 
-key = '194d689380926a95b1dae3c566834ac3'
+key = 'b0d01b99305991c6c5c62f86599cb674'
 base_url = f'https://api.exchangeratesapi.io/v1/latest?access_key={key}&base=USD'
 request = requests.get(base_url).json()
 
