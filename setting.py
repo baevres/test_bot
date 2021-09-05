@@ -95,7 +95,7 @@ class History:
     def check_for_history(self):
         if len(self.text) == 4 and in_list(self.text_cur[0]) and \
                 in_list(self.text_cur[1]):
-            if isinstance(int(self.text[2]), int) and (0 < int(self.text[2]) <= 30) \
+            if isinstance(int(self.text[2]), int) and (1 < int(self.text[2]) <= 30) \
                     and self.text[1] == 'for' and self.text[3] == 'days':
                 return True
 
@@ -135,8 +135,8 @@ class History:
         ax.grid(True)
         ax.plot(x, y, 'o-b', label=f'{self.text_cur[1]}')
         ax.legend(loc='upper left', fontsize=14)
-        plt.savefig(f'img/{msg.chat.id}_figure.jpg', dpi=100) # save jpg graph for each user
-        return f'img/{msg.chat.id}_figure.jpg'
+        plt.savefig(f'{msg.chat.id}_figure.jpg', dpi=100) # save jpg graph for each user
+        return f'{msg.chat.id}_figure.jpg'
 
 
 
