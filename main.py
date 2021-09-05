@@ -74,14 +74,17 @@ def str(msg):
                         raise TypeError
 
                 else:
-                    raise TypeError or IndexError
+                    raise TypeError
 
             else:
                 raise TypeError
-
-    except TypeError or IndexError:
-            my_answer = '😓 Sorry, I don`t understand you. Please, type a correct command.'
-            bot.send_message(msg.chat.id, my_answer)
+    except IndexError:
+        my_answer = '😓 Sorry, I don`t understand you. Please, type a correct command.'
+        bot.send_message(msg.chat.id, my_answer)
+        
+    except TypeError:
+        my_answer = '😓 Sorry, I don`t understand you. Please, type a correct command.'
+        bot.send_message(msg.chat.id, my_answer)
 
 
 bot.polling(none_stop=True, interval=0)
