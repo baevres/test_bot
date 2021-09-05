@@ -3,37 +3,40 @@ import setting
 from setting import *
 
 
-def test_for_exchange():
-    req1 = Exchange(['10', 'USD', 'to', 'EUR'])
-    req2 = Exchange(['200', 'Usd', 'to', 'EuR'])
-    req3 = Exchange(['UH'])
-    req4 = Exchange(['14', 'uah', 'to', 'usd'])
+class TestForExchange:
+    params = [('10 USD to EUR', True),
+              ('200 Usd to EuR', True),
+              ('14 uah to uah', True),
+              ('UH', None)]
 
-    assert req1.check_for_exchange() == True
-    assert req2.check_for_exchange() == True
-    assert req3.check_for_exchange() == None
-    assert req4.check_for_exchange() == None
+    @pytest.fixture(scope='class',
+                    params=params)
+    def params_test(self, request):
+        return request.param
+
+    def test_positive(self, params_test):
+        (input_data, expected) = params_test
+        input_data = input_data.split(' ')
+        result = Exchange(input_data)
+        print(f'input: {input_data}, expected: {expected}, result: {result.check_for_exchange()}')
+        assert result.check_for_exchange() == expected
 
 
-def test_for_history():
-    req1 = History(['USD/EUR', 'for', '7', 'days'], ['USD', 'EUR'])
-    req2 = History(['UsD/EuR', 'for', '8', 'days'], ['UsD', 'EuR'])
-    req3 = History(['USD', 'for', '7', 'days'], ['USD', ''])
-    req4 = History(['USD/EUR', 'for', '7', 'days'], ['', ''])
-    req5 = History(['uah/EuR', 'for', '12', 'days'], ['Uah', 'EuR'])
-    req6 = History(['eur/Cad', 'for', '15', 'years'], ['eur', 'Cad'])
+class TestForHistory:
+    params = [(['USD/EUR', 'for', '2', 'days'], ['USD', 'EUR'], True),
+              (['uah/EuR', 'for', '30', 'days'], ['Uah', 'EuR'], True),
+              (['USD/UAH', 'for', '0', 'days'], ['USD', 'UAH'], None),
+              (['USD', 'for', '7', 'days'], ['USD', ''], None),
+              (['USD/EUR', 'for', '7', 'days'], ['', ''], None),
+              (['eur/Cad', 'for', '31', 'days'], ['eur', 'Cad'], None)]
 
-    assert req1.check_for_history() == True
-    assert req2.check_for_history() == True
-    assert req3.check_for_history() == None
-    assert req4.check_for_history() == None
-    assert req5.check_for_history() == True
-    assert req6.check_for_history() == None
+    @pytest.fixture(scope='class',
+                    params=params)
+    def params_test(self, request):
+        return request.param
 
-    val1 = req1.history()
-    val2 = req2.history()
-    val5 = req5.history()
-
-    assert len(val1) == 7
-    assert len(val2) == 8
-    assert len(val5) == 12
+    def test_positive(self, params_test):
+        (input_data1, input_data2, expected) = params_test
+        result = History(input_data1, input_data2)
+        print(f'input: {input_data1}, expected: {expected}, result: {result.check_for_history()}')
+        assert result.check_for_history() == expected
